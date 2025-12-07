@@ -1,0 +1,116 @@
+<section class="home">
+  <!-- Hero Header -->
+  <div class="hero-header">
+    <div class="hero-content">
+      <h1>My Recipe Collection</h1>
+      <p>Discover, create, and organize your favorite recipes in one place</p>
+    </div>
+    <a href="/recipe-new" class="btn-create">
+      <span class="btn-icon">+</span>
+      <span>Create New Recipe</span>
+    </a>
+  </div>
+
+  <!-- Search & Filter Section -->
+  <div class="search-filter-section">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Search recipes by name or serving size..."
+        class="search-input"
+      />
+      <span class="search-icon">🔍</span>
+      <button *ngIf="searchQuery" (click)="clearSearch()" class="clear-btn">✕</button>
+    </div>
+
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label for="sort-select">Sort by:</label>
+        <select [(ngModel)]="sortBy" (ngModelChange)="applyFiltersAndSort()" id="sort-select" class="sort-select">
+          <option value="name">Name (A-Z)</option>
+          <option value="recent">Recently Added</option>
+        </select>
+      </div>
+
+      <button (click)="toggleViewMode()" class="btn-view-mode" [title]="'Switch to ' + (viewMode === 'grid' ? 'list' : 'grid') + ' view'">
+        <span *ngIf="viewMode === 'grid'">📋 List View</span>
+        <span *ngIf="viewMode === 'list'">⊞ Grid View</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div *ngIf="!loading && recipes.length > 0" class="stats-section">
+    <div class="stat-item">
+      <span class="stat-number">{{ filteredRecipes.length }}</span>
+      <span class="stat-label">{{ filteredRecipes.length === 1 ? 'Recipe' : 'Recipes' }}</span>
+    </div>
+    <div *ngIf="searchQuery" class="stat-item highlight">
+      <span class="stat-label">Search Results for: <strong>"{{ searchQuery }}"</strong></span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading your recipes...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-state">
+    <span class="error-icon">⚠️</span>
+    <p>{{ error }}</p>
+    <button (click)="loadRecipes()" class="btn-retry">Try Again</button>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && recipes.length === 0" class="empty-state">
+    <span class="empty-icon">🍳</span>
+    <h2>No Recipes Yet</h2>
+    <p>Start building your recipe collection by creating your first recipe!</p>
+    <a href="/recipe-new" class="btn-primary-large">Create First Recipe</a>
+  </div>
+
+  <!-- No Search Results -->
+  <div *ngIf="!loading && !error && recipes.length > 0 && filteredRecipes.length === 0" class="no-results">
+    <span class="no-results-icon">🔍</span>
+    <h2>No recipes found</h2>
+    <p>Try adjusting your search terms or clearing the search to see all recipes.</p>
+    <button (click)="clearSearch()" class="btn-secondary">Clear Search</button>
+  </div>
+
+  <!-- Recipes Grid View -->
+  <div *ngIf="!loading && filteredRecipes.length > 0" [ngClass]="viewMode === 'grid' ? 'recipes-grid' : 'recipes-list'">
+    <div *ngFor="let recipe of filteredRecipes" [ngClass]="viewMode === 'grid' ? 'recipe-card-grid' : 'recipe-card-list'" class="recipe-card">
+      <!-- Recipe Image -->
+      <div class="recipe-image-container" *ngIf="viewMode === 'grid'">
+        <img *ngIf="getImageUrl(recipe)" [src]="getImageUrl(recipe)" [alt]="recipe.Title" class="recipe-image" />
+        <div *ngIf="!getImageUrl(recipe)" class="recipe-image-placeholder">
+          <span>🍽️</span>
+        </div>
+      </div>
+
+      <!-- Recipe Content -->
+      <div class="recipe-content">
+        <div class="recipe-header">
+          <h3 class="recipe-title">{{ recipe.Title }}</h3>
+          <span class="recipe-badge">{{ recipe.ServingSize }}</span>
+        </div>
+
+        <div class="recipe-info">
+          <span class="info-item">
+            <span class="info-icon">👥</span>
+            <span>{{ recipe.ServingSize }}</span>
+          </span>
+        </div>
+
+        <a [href]="'/recipe/' + recipe.Id" class="btn-view-recipe">
+          <span>View Details</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

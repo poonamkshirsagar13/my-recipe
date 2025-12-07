@@ -1,0 +1,21 @@
+:host{display:block}
+.app-header{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  height:100%;
+  box-sizing:border-box;
+  padding:0.6rem 1rem;
+  background: linear-gradient(90deg, var(--surface), rgba(15,21,25,0.98));
+  border-bottom:1px solid var(--border);
+}
+.header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.left{display:flex;align-items:center;gap:0.6rem}
+.logo{font-size:1.6rem}
+.title{font-weight:700;font-size:1.1rem;color:var(--text)}
+.logo{color:var(--accent)}
+.profile{font-size:1.4rem;color:var(--text)}

@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global dark theme variables and base rules */
+:root{
+	--bg: #0b0f13; /* page background */
+	--surface: #0f1519; /* cards, header/footer */
+	--muted: #98a1a8; /* secondary text */
+	--text: #e6eef3; /* primary text */
+	--accent: #4fb3ff; /* links, accents */
+	--border: rgba(255,255,255,0.06);
+	--glass: rgba(255,255,255,0.02);
+}
+
+html, body, :root { height: 100%; }
+body{
+	margin:0;
+	background:var(--bg);
+	color:var(--text);
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+}
+
+/* sensible anchor defaults */
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Make components inherit the dark surfaces by default */
+app-header, app-footer, .app-main, .app-main > *{ background:transparent }
+
+/* small utility classes */
+.muted{color:var(--muted)}
+.surface{background:var(--surface); border:1px solid var(--border)}
+
+/* ensure all plain text falls back to readable color */
+p, h1, h2, h3, h4, h5, h6, li { color:var(--text) }
+
