@@ -19,7 +19,7 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-mysql-data/
+mysql/
 
 # Visual Studio Code
 .vscode/*
