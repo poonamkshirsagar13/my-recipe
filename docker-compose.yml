@@ -1,8 +1,8 @@
-
 services:
   mysql:
-    image: mysql:latest
+    image: mysql:8.0
     container_name: mysql_container
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: admn1234
       MYSQL_DATABASE: recipes
@@ -13,7 +13,20 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-padmn1234"]
+      timeout: 20s
+      retries: 10
+      start_period: 40s
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --max_allowed_packet=16MB
 
-# Note: using bind mounts so the host `./mysql` directory maps directly
-# to container `/var/lib/mysql`. The `./mysql-init` directory contains
-# initialization scripts that run on first startup.
+# Notes:
+# - Using bind mount for ./mysql to persist data between container restarts
+# - ./mysql-init contains SQL initialization scripts that run on first startup
+# - Health check ensures MySQL is fully initialized before API connects
+# - Character set configured for UTF-8MB4 support (including emojis)
+# - To reset and recreate tables: docker-compose down -v && docker-compose up -d

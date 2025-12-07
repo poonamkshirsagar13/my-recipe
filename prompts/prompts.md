@@ -32,3 +32,9 @@ even after successful image upload in recipe ,recipe component doesnot load buff
 
 ---
 modified UI of home page make it more reactive and apperence also add search recipe for help user
+
+---
+create needed ddl (data defination language) for creating neede entities from backend api , add ddl to mysql-init and use them while initialize docker compose up to recreate table if missing
+
+---
+docker compose up not recreating tables verify docker servise using mysqual-init to populate data on start up
